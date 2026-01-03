@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang Kami</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .hero-section {
+            background: url('{{ url_for("static", filename="images/banner.jpg") }}') center/cover no-repeat;
+            padding: 100px 0;
+            color: rgb(0, 0, 0);
+        }
+
+        .section-title {
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('home') }}">AATRIFTSHOP</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('about') }}">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}#contact">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}#faq">FAQ</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-9 fw-bold mb-5">ABOUT US</h1>
+            <p class="text-center mx-auto" style="max-width: 600px;">
+                <strong>AATHRIFTSHOP</strong> adalah store streetwear thrift yang menjual barang-barang pilihan mulai dari hoodie, jacket, sampai rare pieces.
+Kita cuma masukin item yang kualitasnya masih cakep dan vibe-nya dapet.
+Gaya keren nggak harus mahal, yang penting taste.
+        </p>
+        </div>
+    </section>
+
+    <!-- About -->
+    
+
+    <!-- Contact -->
+    <section id="contact" class="container py-5">
+        <h2 class="section-title text-center">CONTACT US</h2>
+
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="bg-white p-4 shadow-sm rounded">
+
+                    <p><strong>Email:</strong> aadmin@thrift.com</a></p>
+                    <p><strong>Instagram:</strong> @aatriftshop</p>
+                    <p><strong>Lokasi:</strong> Kepandean, Serang, Indonesia</p>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- FAQ -->
+<section id="faq" class="container py-5">
+    <h2 class="section-title text-center">FAQ</h2>
+
+    <div class="accordion mx-auto" style="max-width: 700px;" id="faqAccordion">
+
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="q1">
+                <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#a1">
+                    Bagaimana cara login?
+                </button>
+            </h2>
+            <div id="a1" class="accordion-collapse collapse"
+                 data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Gunakan email & password yang terdaftar di halaman login.
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="q2">
+                <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#a2">
+                    Apakah data saya aman?
+                </button>
+            </h2>
+            <div id="a2" class="accordion-collapse collapse"
+                 data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Ya, data Anda diamankan menggunakan sistem session Flask.
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="q3">
+                <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#a3">
+                    Bisa daftar akun baru?
+                </button>
+            </h2>
+            <div id="a3" class="accordion-collapse collapse"
+                 data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Tentu! Cukup isi form di halaman Register.
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+    <footer class="footer pt-5">
+  <div class="text-center mb-5">
+    <h2 class="fw-bold">Don't miss the drop</h2>
+    <p>Be the first to know about new arrivals.</p>
+
+    <form class="d-flex border border-dark rounded-pill overflow-hidden mx-auto" style="max-width: 400px;">
+      <input type="email" class="form-control border-0" placeholder="Email" required>
+      <button class="btn btn-outline-dark border-0" type="submit">
+        <i class="bi bi-arrow-right"></i>
+      </button>
+    </form>
+  </div>
+
+  <hr>
+
+  <div class="container py-4">
+    <div class="row">
+
+      <div class="col-md-4 mb-4">
+        <h5 class="fw-bold">QUICK LINKS</h5>
+        <ul class="list-unstyled mt-3">
+          <li><a href="{{ url_for('about') }}" class="text-decoration-none text-dark">
+    About
+</a>
+</li>
+          <li><a href="{{ url_for('about') }}" class="text-dark text-decoration-none">Contact Us</a></li>
+          <li><a href="{{ url_for('about') }}" class="text-dark text-decoration-none">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <h5 class="fw-bold">VISIT OUR SHOP</h5>
+        <p class="mt-3 mb-1">Jalan Raya Cilegon, Kepandean, Kagungan</p>
+        <p class="mb-1">Kec. Serang, Kota Serang, Banten</p>
+        <p class="mb-0">42182</p>
+      </div>
+
+      <div class="col-md-4 mb-4 text-md-end">
+        <h5 class="fw-bold">OPERATING HOURS</h5>
+        <p class="mt-3 mb-1">Monday - Friday | 09:00 - 22:00</p>
+        <p class="mb-1">Saturday | 09:00 - 00:00</p>
+        <p class="mb-0">Sunday | Closed</p>
+      </div>
+
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="#" class="text-dark mx-2"><i class="bi bi-facebook fs-4"></i></a>
+      <a href="https://www.instagram.com/malfrzzi/" class="text-dark mx-2"><i class="bi bi-instagram fs-4"></i></a>
+      <a href="#" class="text-dark mx-2"><i class="bi bi-tiktok fs-4"></i></a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

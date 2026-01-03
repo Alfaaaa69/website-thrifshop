@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ product.name }}</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+  .product-img-box {
+    width: 100%;
+    height: 480px;           /* kotak fix supaya semua produk sama tinggi */
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .product-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;     /* biar hoodie tinggi tidak memanjang */
+  }
+</style>
+</head>
+
+<body>
+
+  <div class="container py-5">
+    <div class="row g-5">
+
+      <!-- Gambar Produk -->
+      
+      <div class="col-md-6 text-center">
+        <div class="product-img-box">
+          <img src="{{ url_for('static', filename='images/' + product.image) }}"
+            alt="{{ product.name }}">
+        </div>
+      </div>
+
+      <!-- Detail Produk -->
+      <div class="col-md-6" style="position: relative;">
+          <!-- NOTIF MUNCUL DI ATAS SINI -->
+<div id="toast"
+     style="
+         position: absolute;
+         top: -10px;        /* naik ke atas nama produk */
+         left: 50%;
+         transform: translateX(-50%);
+         background:#222;
+         color:#fff;
+         padding:10px 15px;
+         border-radius:6px;
+         opacity:0;
+         transition:opacity .4s ease, transform .3s ease;
+         z-index: 50;
+     ">
+</div>
+
+        <h2 class="fw-bold">{{ product.name }}</h2>
+        <div class="product-detail">
+
+    <!-- konten lainnya -->
+</div>
+
+
+        <!-- Rating -->
+        <div class="d-flex align-items-center mb-3">
+          {% for i in range(1, 6) %}
+            {% if i <= product.rating %}
+              <i class="bi bi-star-fill text-warning"></i>
+            {% else %}
+              <i class="bi bi-star text-warning"></i>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        <!-- Harga -->
+        <h4 class="fw-semibold mb-3">Rp {{ "{:,.0f}".format(product.price) }}</h4>
+
+        <!-- Stock -->
+         <div class="p-2 px-3 d-inline-flex align-items-center mb-3"
+     style="
+        background:#000000;
+        border:1px solid #ffffff;
+        border-radius: 10px;
+        font-weight:600;
+        color:#ffffff;
+     ">
+  <i class="bi bi-box me-2"></i>
+  Stock: {{ product.stock }}
+</div>
+
+
+        <!-- Size -->
+        <div class="mb-3">
+          <label class="fw-semibold">Size:</label><br>
+          <button class="btn btn-dark btn-sm" disabled>{{ product.size }}</button>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-4">
+          <label class="fw-semibold mb-2">Description:</label>
+          <p class="text-muted" style="line-height:1.6;">
+            {{ product.description }}
+          </p>
+        </div>
+
+        <!-- Tombol -->
+        <div class="d-flex gap-3 mt-4">
+          <a href="{{ url_for('checkout', product_id=product.id) }}"
+            class="btn btn-dark flex-fill">
+            Buy Now
+          </a>
+          <button class="btn btn-outline-dark flex-fill"
+        onclick="addToCartAjax('{{ product.id }}')">
+  Add to Cart
+</button>
+        </div>
+  </div>
+
+<!-- letakkan di paling bawah, sebelum penutup body -->
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+
+</html>

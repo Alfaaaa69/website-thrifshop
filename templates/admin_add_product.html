@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Tambah Produk</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+    .content {
+        margin-left: 240px;
+        padding: 30px;
+    }
+</style>
+
+</head>
+
+<body class="bg-light">
+
+<!-- SIDEBAR -->
+<div class="sidebar position-fixed h-100 bg-dark text-white p-3" style="width:240px;">
+    <h4 class="text-center mb-4">Admin Panel</h4>
+
+    <a href="/admin" class="d-block text-white text-decoration-none py-2">Dashboard</a>
+    <a href="/admin/products" class="d-block text-white text-decoration-none py-2">Kelola Produk</a>
+    <a href="/admin/products/add" class="d-block text-white text-decoration-none py-2">Tambah Produk</a>
+    <a href="/admin/orders" class="d-block text-white text-decoration-none py-2">Lihat Order</a>
+    <a href="/admin/reports" class="d-block text-white text-decoration-none py-2">Laporan Penjualan</a>
+    <a href="/logout" class="d-block text-danger text-decoration-none py-2">Logout</a>
+</div>
+
+<div class="content">
+
+    <h2 class="fw-bold mb-4">Tambah Produk</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <div class="mb-3">
+            <label class="form-label">Nama Produk</label>
+            <input type="text" name="name" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Harga</label>
+            <input type="number" name="price" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Stok</label>
+            <input type="number" name="stock" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">URL Gambar</label>
+            <input type="file" name="image" class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Simpan</button>
+        <a href="/admin/products" class="btn btn-secondary">Kembali</a>
+
+    </form>
+
+
+
+</body>
+</html>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AATHRIFTSHOP</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  
+  <div class="announcement-bar">
+    DELIVERY TAKES 2-3 DAYS THROUGHOUT THE AREA
+</div>
+
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg bg-white py-3 border-bottom">
+  <div class="container-fluid px-5">
+
+    <!-- BARIS ATAS: Logo + Toggler -->
+    <div class="d-flex w-100 align-items-center justify-content-between">
+      <a class="navbar-brand fw-bold fs-4" href="/">
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}" 
+             alt="Logo" width="130" height="100">
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+
+    <!-- COLLAPSE AREA -->
+    <div class="collapse navbar-collapse  w-100 mt-3" id="navbarNav">
+
+      <!-- RIGHT: ICONS -->
+      <div class="d-flex align-items-center ms-auto navbar-icons">
+ 
+        <!-- Search -->
+        <div class="search-wrapper position-relative me-4">
+          <span class="search-icon" id="openSearch">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="26" fill="none"
+                  stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </span>
+
+          <form action="{{ url_for('search') }}" method="get" class="search-container" id="searchBox">
+            <input type="text" name="q" class="search-input" placeholder="Search..." required>
+            <span class="close-icon" id="closeSearch">&#10005;</span>
+          </form>
+        </div>
+
+        <!-- User Menu -->
+        <div class="dropdown me-4">
+          <a href="#" class="text-dark dropdown-toggle" data-bs-toggle="dropdown">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="23" fill="none"
+                  stroke="black" stroke-width="2">
+              <circle cx="12" cy="7" r="4"></circle>
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            </svg>
+          </a>
+
+          <ul class="dropdown-menu dropdown-menu-end">
+            {% if user %}
+              <li class="dropdown-item-text">
+                Selamat datang, <strong>{{ user.split('@')[0].capitalize() }}</strong>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>
+            {% else %}
+              <li><a class="dropdown-item" href="{{ url_for('login') }}">Login</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('register') }}">Register</a></li>
+            {% endif %}
+          </ul>
+        </div>
+
+        <!-- Cart -->
+        <a class="text-dark" data-bs-toggle="offcanvas" href="#cartSidebar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="23" fill="none"
+                stroke="black" stroke-width="2">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+        </a>
+
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+
+<!-- SIDEBAR CART -->
+<div class="offcanvas offcanvas-end" id="cartSidebar">
+  <div class="offcanvas-body">
+
+    <!-- EMPTY CART (default) -->
+    <div id="emptyCartBox" class="text-center py-5">
+      <i class="bi bi-bag-x fs-1 opacity-50"></i>
+      <h5 class="mt-3 fw-semibold">Your cart is empty</h5>
+      <p class="text-muted small mt-1">Browse products and add them to your cart.</p>
+
+      <a href="/" class="btn btn-dark rounded-pill px-4 mt-3">
+        Start Shopping
+      </a>
+    </div>
+
+    <!-- CART CONTENT -->
+    <div id="cartArea" style="display: none;"></div>
+
+    {% if not user %}
+    <div class="login-prompt-bottom text-center mt-4">
+      <p class="mb-1 fw-semibold text-dark">Have an account?</p>
+      <a href="{{ url_for('login') }}" class="login-link">
+        Log in to check out faster →
+      </a>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+
+
+<!-- HERO BANNER -->
+<div class="hero-banner-wrapper">
+  <section class="hero-banner d-flex align-items-center justify-content-center text-center">
+    <div class="hero-content">
+      <h1 class="hero-title">Thrifted Classics. Freshly Discovered.</h1>
+      <p class="hero-subtitle">Every piece handpicked with intention.</p>
+
+      <button onclick="scrollToProducts()" class="shop-btn">
+        Shop Now
+      </button>
+    </div>
+  </section>
+</div>
+
+
+
+
+<!-- PRODUCT SECTION -->
+<section id="products" class="produk-unggulan py-5">
+  <div class="container" id="productSection">
+    <div class="section-title text-center mb-5">
+    <h3 class="fw-bold">Latest Drops</h3>
+    <div class="title-underline mx-auto"></div>
+</div>
+
+    <div class="row g-4">
+      {% for product in products %}
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3 fade-in">
+        <div class="card h-100 shadow-sm border-0">
+          <img src="{{ url_for('static', filename='images/' + product.image) }}"
+               class="card-img-top" alt="{{ product.name }}">
+
+          <div class="card-body text-center">
+            <h6 class="fw-semibold">{{ product.name }}</h6>
+            <p class="text-muted mb-2">
+              Rp {{ "{:,.0f}".format(product.price|float) }}
+            </p>
+            <a href="{{ url_for('product_detail', product_id=product.id) }}"
+               class="btn btn-outline-dark rounded-pill btn-sm">Buy Now</a>
+          </div>
+
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ===== Testimoni Section ===== -->
+<section class="py-5 testimonial-bg">
+
+
+  <div class="container">
+
+    <h2 class="text-center mb-4 fw-bold">Customer Reviews</h2>
+    <div class="title-underline mx-auto"></div>
+
+    <div id="reviewCarousel" class="carousel slide" data-bs-ride="carousel">
+    
+
+      <!-- SLIDES -->
+      <div class="carousel-inner">
+
+        <!-- SLIDE 1 -->
+        <div class="carousel-item active">
+          <div class="row g-3 mt-3">
+
+            <!-- CARD 1 -->
+            <div class="col-md-4">
+              <div class="card p-3 shadow-sm h-100 small-review review-card-dark">
+                <p>“Produknya sesuai dengan deskripsi, kualitas bagus dan pengiriman cepat. Sangat puas!”</p>
+                <div class="d-flex align-items-center mt-3">
+                  <img src="https://i.pravatar.cc/60?img=1" class="rounded-circle me-3" width="50">
+                  <div>
+                    <h6 class="mb-0 fw-semibold">Dimas Bakss</h6>
+                    <small class="text-muted">Essentials Hoodie</small>
+                  </div>
+                </div>
+                <div class="mt-2 text-warning">★★★★★</div>
+              </div>
+            </div>
+
+            <!-- CARD 2 -->
+            <div class="col-md-4">
+              <div class="card p-3 shadow-sm h-100 small-review review-card-dark">
+                <p>“Kualitas produk sangat baik, bahan terasa premium dan nyaman digunakan.”"</p>
+                <div class="d-flex align-items-center mt-3">
+                  <img src="https://i.pravatar.cc/60?img=3" class="rounded-circle me-3" width="50">
+                  <div>
+                    <h6 class="mb-0 fw-semibold">Fitrah Maulidina</h6>
+                    <small class="text-muted">Carhart Work Jacket</small>
+                  </div>
+                </div>
+                <div class="mt-2 text-warning">★★★★★</div>
+              </div>
+            </div>
+
+            <!-- CARD 3 -->
+            <div class="col-md-4">
+              <div class="card p-3 shadow-sm h-100 small-review review-card-dark">
+                <p>“Ada minus dikit tapi masih wajar. Overall puas dan worth it buat harganya.”</p>
+                <div class="d-flex align-items-center mt-3">
+                  <img src="https://i.pravatar.cc/60?img=5" class="rounded-circle me-3" width="50">
+                  <div>
+                    <h6 class="mb-0 fw-semibold">Anggun Apriliyanti</h6>
+                    <small class="text-muted">Champion Hoodie</small>
+                  </div>
+                </div>
+                <div class="mt-2 text-warning">★★★★★</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- SLIDE 2 (contoh, bisa diganti) -->
+        <div class="carousel-item">
+          <div class="row g-3 mt-3">
+
+            <div class="col-md-4">
+              <div class="card p-3 shadow-sm h-100 small-review review-card-dark">
+                <p>“Kondisinya masih cakep. Jahitan aman, warna juga masih oke. Pengiriman cepat dan packing rapi.”</p>
+                <div class="d-flex align-items-center mt-3">
+                  <img src="https://i.pravatar.cc/60?img=8" class="rounded-circle me-3" width="50">
+                  <div>
+                    <h6 class="mb-0 fw-semibold">Michael </h6>
+                    <small class="text-muted">Stussy Hoodie</small>
+                  </div>
+                </div>
+                <div class="mt-2 text-warning">★★★★★</div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="card p-3 shadow-sm h-100 small-review review-card-dark">
+                <p>“Kondisi barang sesuai standar thrift, masih oke dipakai. Sesuai sama harga dan deskripsi yang dikasih.”</p>
+                <div class="d-flex align-items-center mt-3">
+                  <img src="https://i.pravatar.cc/60?img=9" class="rounded-circle me-3" width="50">
+                  <div>
+                    <h6 class="mb-0 fw-semibold">Jane Doe</h6>
+                    <small class="text-muted">Stone Island Down Jacket</small>
+                  </div>
+                </div>
+                <div class="mt-2 text-warning">★★★★★</div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="card p-3 shadow-sm h-100 small-review review-card-dark">
+                <p>“Barang sesuai foto dan deskripsi. Ada minus kecil, tapi masih wajar. Overall puas dan worth it buat harganya.”</p>
+                <div class="d-flex align-items-center mt-3">
+                  <img src="https://i.pravatar.cc/60?img=11" class="rounded-circle me-3" width="50">
+                  <div>
+                    <h6 class="mb-0 fw-semibold">Bang Jenggot</h6>
+                    <small class="text-muted">The North Face Jacket</small>
+                  </div>
+                </div>
+                <div class="mt-2 text-warning">★★★★★</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+<section class="contact-map-section py-5">
+  <div class="container">
+    <div class="row align-items-center">
+
+      <!-- MAP -->
+      <div class="col-lg-7 mb-4 mb-lg-0">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d788.7999973873035!2d106.14517099314197!3d-6.11076160963705!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e418b25e50e4985%3A0x20b1aff3e1653f5f!2sMasjid%20Al-Istiqomah!5e0!3m2!1sid!2sid!4v1763637814725!5m2!1sid!2sid" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+
+      <!-- INFO -->
+      <div class="col-lg-5">
+        <h4 class="fw-bold mb-4">Visit Us</h4>
+        
+        <h5 class="fw-semibold mb-4">AATHRIFTSHOP</h5>
+
+        <p class="mb-3">
+          Jalan Raya Cilegon, Kepandean, Kagungan<br>
+          Serang, Indonesia
+        </p>
+
+        <p class="mb-1 fw-semibold">Open:</p>
+        <p class="mb-3">Mon–Fri: 9am – 10pm</p>
+
+        <p class="mb-1 fw-semibold">Email:</p>
+        <p class="mb-3">
+          <a href="mailto:info@example.com">aathrift@gmail.com</a>
+        </p>
+
+        <p class="mb-1 fw-semibold">Phone:</p>
+        <p class="mb-4">
+          <a href="tel:+62123456789">+62 812 3181 9902</a>
+        </p>
+
+        <!-- Social icons -->
+        <div class="d-flex gap-3 mb-4">
+          <i class="bi bi-instagram fs-4"></i>
+          <i class="bi bi-facebook fs-4"></i>
+          <i class="bi bi-tiktok fs-4"></i>
+        </div>
+
+        <!-- Button -->
+        <a href="https://www.google.com/maps/?q=-6.11056,106.145565" target="_blank" class="btn btn-dark w-100">
+          Get Directions
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer class="footer pt-5">
+  <div class="text-center mb-5">
+  <h2 class="fw-bold">Don't miss the drop</h2>
+  <p>Be the first to know about new arrivals.</p>
+
+  <form id="subscribeForm" class="d-flex border border-dark rounded-pill overflow-hidden mx-auto" style="max-width: 400px;">
+    <input type="email" name="email" class="form-control border-0" placeholder="Email" required>
+    <button class="btn btn-outline-dark border-0" type="submit">
+      <i class="bi bi-arrow-right"></i>
+    </button>
+  </form>
+
+  <!-- tempat notif -->
+  <div id="subscribeMsg" style="display:none; margin-top:12px; color:green; font-weight:600;">
+    Thank you! You are subscribed.
+  </div>
+</div>
+
+
+  <hr>
+
+  <div class="container py-4">
+    <div class="row">
+
+      <div class="col-md-4 mb-4">
+        <h5 class="fw-bold">QUICK LINKS</h5>
+        <ul class="list-unstyled mt-3">
+          <li><a href="{{ url_for('about') }}" class="text-decoration-none text-dark">
+    About
+</a>
+</li>
+          <li><a href="{{ url_for('about') }}" class="text-dark text-decoration-none">Contact Us</a></li>
+          <li><a href="{{ url_for('about') }}" class="text-dark text-decoration-none">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <h5 class="fw-bold">VISIT OUR SHOP</h5>
+        <p class="mt-3 mb-1">Jalan Raya Cilegon, Kepandean, Kagungan</p>
+        <p class="mb-1">Kec. Serang, Kota Serang, Banten</p>
+        <p class="mb-0">42182</p>
+      </div>
+
+      <div class="col-md-4 mb-4 text-md-end">
+        <h5 class="fw-bold">OPERATING HOURS</h5>
+        <p class="mt-3 mb-1">Monday - Friday | 09:00 - 22:00</p>
+        <p class="mb-1">Saturday | 09:00 - 00:00</p>
+        <p class="mb-0">Sunday | Closed</p>
+      </div>
+
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="#" class="text-dark mx-2"><i class="bi bi-facebook fs-4"></i></a>
+      <a href="https://www.instagram.com/malfrzzi/" class="text-dark mx-2"><i class="bi bi-instagram fs-4"></i></a>
+      <a href="#" class="text-dark mx-2"><i class="bi bi-tiktok fs-4"></i></a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>

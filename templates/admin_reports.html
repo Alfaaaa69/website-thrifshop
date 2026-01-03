@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <title>Laporan Pembelian</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="bg-light">
+
+<div class="container py-4">
+
+    <h2 class="fw-bold mb-4"> Laporan Penjualan</h2>
+
+    <!-- FILTER -->
+    <div class="mb-4">
+        <a href="?period=weekly" class="btn btn-outline-primary btn-sm">Weekly</a>
+        <a href="?period=monthly" class="btn btn-outline-success btn-sm">Monthly</a>
+        <a href="?period=yearly" class="btn btn-outline-dark btn-sm">Yearly</a>
+    </div>
+
+    {% if reports|length == 0 %}
+        <div class="alert alert-warning">Tidak ada data.</div>
+    {% else %}
+
+    <!-- CHART -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h5 class="fw-bold mb-3">Grafik Pendapatan</h5>
+
+            <!-- SIMPAN DATA DI ATTRIBUTE -->
+            <canvas id="reportChart"
+                data-labels='[
+                    {% for row in reports %}
+                        "{{ row.tanggal }}"{% if not loop.last %},{% endif %}
+                    {% endfor %}
+                ]'
+                data-values='[
+                    {% for row in reports %}
+                        {{ row.total_pendapatan or 0 }}{% if not loop.last %},{% endif %}
+                    {% endfor %}
+                ]'
+            ></canvas>
+        </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h5 class="fw-bold mb-3">Detail Laporan</h5>
+
+            <table class="table table-bordered bg-white">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Total Order</th>
+                        <th>Total Pendapatan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in reports %}
+                    <tr>
+                        <td>{{ row.tanggal }}</td>
+                        <td>{{ row.total_order }}</td>
+                        <td>Rp {{ "{:,.0f}".format(row.total_pendapatan or 0) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {% endif %}
+</div>
+
+<!-- SCRIPT JS -->
+<script>
+    const canvas = document.getElementById('reportChart');
+
+    if (canvas) {
+        const labels = JSON.parse(canvas.dataset.labels);
+        const values = JSON.parse(canvas.dataset.values);
+
+        new Chart(canvas, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Pendapatan',
+                    data: values,
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                }
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

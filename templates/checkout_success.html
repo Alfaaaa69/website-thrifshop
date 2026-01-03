@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Success</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f6f6f6;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        }
+        .success-box {
+            max-width: 700px;
+            margin: 80px auto;
+            background: #fff;
+            padding: 36px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(2,6,23,0.07);
+            animation: fadeIn 0.35s ease-in-out;
+        }
+        .check-icon {
+            font-size: 56px;
+            background: linear-gradient(135deg,#16a34a,#059669);
+            color: white;
+            border-radius: 50%;
+            width: 92px;
+            height: 92px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 18px;
+            box-shadow: 0 6px 18px rgba(2,6,23,0.08);
+        }
+        h2 {
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        p.lead {
+            color: #374151;
+            font-size: 1rem;
+            margin-bottom: 18px;
+        }
+        .order-card {
+            text-align: left;
+            border: 1px solid #efefef;
+            padding: 16px;
+            border-radius: 8px;
+            background: #fafafa;
+            margin-top: 18px;
+        }
+        .order-row {
+            display:flex;
+            justify-content:space-between;
+            margin-bottom:8px;
+            color:#374151;
+        }
+        .muted { color: #6b7280; font-size: .95rem; }
+        .btn-main {
+            background: #111827;
+            color: #fff;
+            padding: 12px 28px;
+            border-radius: 8px;
+            margin-top: 18px;
+            text-decoration: none;
+            display: inline-block;
+            border: none;
+        }
+        .btn-secondary {
+            background: transparent;
+            color: #374151;
+            border: 1px solid #e5e7eb;
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin-left: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width:576px){
+            .success-box{ margin:30px 16px; padding:20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="success-box">
+    <div class="check-icon">✓</div>
+    <h2>Order Berhasil!</h2>
+    <p class="lead">Terima kasih pesanan kamu sudah diterima. Kami akan memproses dan mengirimkan informasi pengiriman lewat email / nomor telepon yang kamu berikan.</p>
+
+<div class="order-row muted"><div>Nomor Pesanan</div><div><strong>#{{ order.id }}</strong></div></div>
+<div class="order-row"><div class="muted">Nama</div><div>{{ order.customer_name }}</div></div>
+<div class="order-row"><div class="muted">Metode Pengiriman</div><div>{{ order.delivery_method }}</div></div>
+<div class="order-row"><div class="muted">Metode Pembayaran</div><div>{{ order.payment_method }}</div></div>
+<hr>
+<div class="order-row"><div class="muted">Shipping</div><div>{{ order.shipping }}</div></div>
+<div class="order-row"><div><strong>Total</strong></div><div><strong>{{ order.total }}</strong></div></div>
+
+    <div style="margin-top:18px;">
+        <a href="/" class="btn-main">Kembali ke Home</a>
+    </div>
+</div>
+
+</body>
+</html>
